@@ -1,0 +1,19 @@
+category: web
+points: 300
+title: Ржавчинная руда
+author: enhydra
+description: |
+  Одна и та же последовательность букв может нести совершенно разный смысл, не так ли?
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: ../_scripts/kyzylborda-lib-quarantine-daemon Dockerfile.controller app
+  cwd: .
+  socket: ./app.sock
+  socket_type: http
+  buffer: false
+  hostnames:
+   - rustore.s.2025.ugractf.ru
+   - rustore.board.ugractf.ru
+secrets:
+  flag: ugra_ital_ldepen_dsonho_wyousp_lit_[a-z0-9]{12}
+  seed: difFJjwenvIqnvnruZydoerlh3339

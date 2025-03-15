@@ -1,0 +1,19 @@
+category: web
+title: Взлёт
+points: 100
+author: lowderplay
+description: |
+    <p>Мы нашли эту страницу в даркнете. Действительно ли этот хакер так хорош, как он утверждает?
+    <p><strong>Обновлено:</strong> В задании «Взлёт» в первые полчаса соревнований сервер мог работать нестабильно. Если у вас была какая-то идея, но не получилось, попробуйте ещё раз.
+generator: ../_scripts/kyzylborda-lib-generator
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: .
+  socket: ./app.sock
+  socket_type: http
+  hostnames:
+   - takeoff.s.2025.ugractf.ru
+   - takeoff.board.ugractf.ru
+secrets:
+  seed: aWa1eeOyRdSi6QWomrPLeSwlPeyaMaLZ
+  flag: ugra_dont_keep_your_keys_under_the_mat_[a-z]{16}

@@ -1,0 +1,6 @@
+volumes:
+  - user_data:/state
+  - ./:/app:ro
+socket: unix:/tmp/app.sock
+healthcheck:
+  connect: unix:/tmp/app.sock

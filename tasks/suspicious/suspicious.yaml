@@ -1,0 +1,16 @@
+category: forensics
+points: 250
+title:
+  ru: Подозрительный поток
+  en: Suspicious stream
+author: sylfn
+description:
+  ru: |
+    <p>Не смогли перехватить начало, но думаем, что и этого хватит
+  en: |
+    <p>Couldn't capture the beginning, but we think it's enough
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: VX5i40ykK1tXhLUzkQgKz8pV0HUqIs3h
+  random_seed: seed_[a-zA-Z0-9]{20}
+  flag: ugra_i_will_not_use_base64_as_random_source_[0-9a-z]{12}

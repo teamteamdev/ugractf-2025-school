@@ -1,0 +1,10 @@
+category: reverse
+points: 350
+title: Настоящая крипта
+author: x3lfyn
+description: |
+  <p>АААА крипта крипта много крипты...</p>
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: w5fcNAxFnHNiccTP2NTbLpfV1ksTRojrCI/eLc3C8i0=
+  flag: ugra_crypto_means_cryptocurrency_not_cryptography_[a-z]{14}

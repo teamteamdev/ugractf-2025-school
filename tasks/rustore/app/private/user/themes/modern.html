@@ -1,0 +1,398 @@
+{% extends "themes/base.html" %}
+
+{% block title %}Rust Ore{% endblock %}
+
+{% block head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@200;300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+<style type="text/css">
+    :root {
+        --metal-light: #e8edf3;
+        --metal-mid: #c4cdd8;
+        --metal-dark: #2c3e50;
+        --accent-blue: #3498db;
+        --accent-blue-light: #5dade2;
+        --text-color: #34495e;
+        --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e8edf3 100%);
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-gradient);
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--metal-dark) 0%, #34495e 100%);
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(44, 62, 80, 0.1);
+    }
+
+    h1 {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 200;
+        font-size: 4.5em;
+        margin: 0;
+        color: white;
+        letter-spacing: 0.1em;
+    }
+
+    h1 small {
+        display: block;
+        font-size: 0.25em;
+        color: var(--metal-mid);
+        font-weight: 300;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin-bottom: 0.5em;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .welcome-text {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 300;
+        font-size: 1.1em;
+        text-align: center;
+        margin: 2rem auto;
+        max-width: 800px;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(44, 62, 80, 0.05);
+    }
+
+    .action-buttons {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .btn {
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 1em;
+        padding: 0.8rem 1.6rem;
+        margin: 0 0.5rem;
+        background: var(--accent-blue);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+    }
+
+    .btn:hover {
+        background: var(--accent-blue-light);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(44, 62, 80, 0);
+        backdrop-filter: blur(0px);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: background 4s ease-in-out, backdrop-filter 4s ease-in-out;
+    }
+
+    .modal.active {
+        display: flex;
+        background: rgba(44, 62, 80, 0.8);
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 600px;
+        position: relative;
+        transform: translateY(-100px) scale(0.9);
+        opacity: 0;
+        transition: all 4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 10px 30px rgba(44, 62, 80, 0.2);
+    }
+
+    .modal.active .modal-content {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    @keyframes modalFadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-100px) scale(0.9);
+        }
+        50% {
+            opacity: 0.5;
+            transform: translateY(20px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes blurIn {
+        0% {
+            backdrop-filter: blur(0px);
+        }
+        100% {
+            backdrop-filter: blur(4px);
+        }
+    }
+
+    .modal h2 {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 300;
+        color: var(--text-color);
+        margin-top: 0;
+        font-size: 1.8em;
+    }
+
+    article {
+        background: white;
+        margin: 2rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(44, 62, 80, 0.05);
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    article header {
+        background: linear-gradient(135deg, var(--metal-dark) 0%, #34495e 100%);
+        padding: 2rem 1rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        border-right: 1px solid var(--metal-mid);
+    }
+
+    .user-info {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-info img {
+        width: 256px;
+        height: 256px;
+        border: 2px solid var(--metal-light);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
+    }
+
+    .user-info .username {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 200;
+        font-size: 1.4em;
+        color: white;
+        margin: 0.5rem 0;
+    }
+
+    .post-meta {
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1rem;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    time {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 300;
+        color: var(--metal-mid);
+        font-size: 0.9em;
+        display: block;
+    }
+
+    .code-block {
+        padding: 2rem;
+        background: #1a1a1a;
+        margin: 0;
+        min-height: 300px;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    .code-block pre {
+        margin: 0;
+        padding: 0;
+        white-space: pre;
+        width: fit-content;
+        min-width: 100%;
+    }
+
+    .code-block pre code {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 300;
+        font-size: 1em;
+        line-height: 1.6;
+        display: block;
+    }
+
+    select, input[type="file"] {
+        font-family: 'Inter', sans-serif;
+        padding: 0.5rem;
+        border: 1px solid var(--metal-mid);
+        border-radius: 6px;
+        background: white;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+    }
+
+    textarea {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 300;
+        font-size: 1em;
+        padding: 1rem;
+        border: 1px solid var(--metal-mid);
+        border-radius: 8px;
+        background: #1a1a1a;
+        color: #fff;
+        min-height: 200px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 300;
+        color: var(--text-color);
+    }
+</style>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        window.showModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            // Force reflow
+            modal.offsetHeight;
+            modal.classList.add('active');
+        };
+
+        window.hideModals = () => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    if (!modal.classList.contains('active')) {
+                        modal.style.display = 'none';
+                    }
+                }, 4000); // Match the transition duration
+            });
+        };
+
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) hideModals();
+            });
+        });
+
+        document.querySelectorAll('article pre').forEach(pre => {
+            const code = document.createElement('code');
+            code.className = 'language-rust';
+            code.textContent = pre.textContent;
+            pre.textContent = '';
+            pre.appendChild(code);
+            Prism.highlightElement(code);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <h1><small>проект</small> RUST ORE</h1>
+</div>
+
+<div class="container">
+    <div class="welcome-text">
+        <p>Добро пожаловать в проект <strong>Rust Ore</strong>! Здесь мы собираем самые ржавые кусочки кода, чтобы создать нечто великое.
+          Не стесняйтесь делиться своими ржа… выми идеями и проектами. Помните, что ржавчина — это не дефект, а эффект!
+          Давайте вместе создадим что-то, что будет блестеть, как ваш новенький болт, но с душой старого доброго железа.
+          Присоединяйтесь к нам, и пусть ваш код будет таким же крепким, как старый добрый гвоздь!</p>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn" onclick="showModal('postModal')">Создать пост</button>
+        <button class="btn" onclick="showModal('settingsModal')">Настройки</button>
+    </div>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <h2>Новый пост</h2>
+            <form method="post" action="post">
+                <textarea name="content" required></textarea>
+                <button class="btn" type="submit">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h2>Настройки</h2>
+            <form method="post" action="settings" enctype="multipart/form-data">
+                <p>
+                    <label for="theme">Тема оформления:</label>
+                    <select name="theme">
+                        {% for th in ["default", "rusty", "modern"] %}
+                        <option value="{{ th }}.html" {% if th + ".html" == theme %}selected{% endif %}>{{ th }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="avatar">Выберите аватар (необязательно):</label>
+                    <input type="file" id="avatar" name="avatar" accept=".svg">
+                </p>
+                <button class="btn" type="submit">Изменить настройки</button>
+            </form>
+        </div>
+    </div>
+
+    {% for timestamp, username, content in posts %}
+    <article>
+        <header>
+            <div class="user-info">
+                <img src="?avatars/{{ username }}.svg" alt="{{ username }}">
+                <span class="username">{{ username }}</span>
+            </div>
+            <div class="post-meta">
+                <time datetime="{{ timestamp }}">{{ timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</time>
+            </div>
+        </header>
+        <div class="code-block">
+            <pre>{{ content }}</pre>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

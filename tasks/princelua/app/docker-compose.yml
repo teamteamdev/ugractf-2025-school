@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+  proxy:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.proxy
+    volumes:
+      - ${TMPDIR}:/tmp
+
+networks:
+  default:
+    internal: true

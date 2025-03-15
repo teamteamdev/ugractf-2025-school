@@ -1,0 +1,10 @@
+category: ppc
+points: 150
+title: Личинг
+author: lowderplay
+description: |
+    <p>Встаньте на раздачу кто-нибудь...
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: Hf8z7YaofcuzkGTVU0cKsf59FtNT2ecM
+  flag: ugra_torrenting_is_not_piracy_[0-9a-z]{12}

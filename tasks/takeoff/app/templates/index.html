@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberianPhantom</title>
+    <style>
+        :root {
+            --neon-color: #0ff;
+            --bg-color: #0a0a0a;
+            --bg-color-light: #f0f0f0;
+            --text-color: #e0e0e0;
+            --text-color-dark: #1a1a1a;
+            --text-size-base: 16px;
+            --text-size-lg: 1.125rem;
+            --text-size-xl: 1.25rem;
+            --line-height-relaxed: 1.75;
+        }
+
+        @keyframes neonPulse {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+            100% { filter: brightness(1); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', monospace;
+            font-size: var(--text-size-base);
+            line-height: var(--line-height-relaxed);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .glitch-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 2rem 0;
+            position: relative;
+            color: var(--neon-color);
+            text-shadow: 0 0 5px var(--neon-color);
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 70% {
+                transform: translate(0, 0) skew(0deg);
+            }
+            71%, 74% {
+                transform: translate(6px, 0) skew(8deg);
+            }
+            75%, 78% {
+                transform: translate(-6px, 0) skew(-8deg);
+            }
+            79%, 82% {
+                transform: translate(4px, 0) skew(12deg);
+            }
+            83%, 86% {
+                transform: translate(-4px, 0) skew(-12deg);
+            }
+            87%, 100% {
+                transform: translate(0, 0) skew(0deg);
+            }
+        }
+
+        .section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid var(--neon-color);
+            background: rgba(0, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            box-shadow: 0 0 15px var(--neon-color);
+            transform: scale(1.01);
+        }
+
+        .section h2 {
+            color: var(--neon-color);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 800;
+            text-shadow: 0 0 10px var(--neon-color), 0 0 20px var(--neon-color);
+        }
+
+        .section p {
+            font-size: var(--text-size-lg);
+            margin-bottom: 1rem;
+        }
+
+        .key-list {
+            list-style: none;
+        }
+
+        .key-list li {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(0, 255, 255, 0.1);
+            border-left: 3px solid var(--neon-color);
+        }
+
+        .key-list a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .key-list a:hover {
+            color: var(--neon-color);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            background: var(--neon-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: var(--text-size-base);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--neon-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .glitch-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle">Сменить цвет</button>
+    <div class="matrix-bg" id="matrix"></div>
+    <div class="container">
+        <h1 class="glitch-title">CyberianPhantom</h1>
+
+        <div class="section">
+            <h2>// О себе</h2>
+            <p>Digital nomad. Code artist. Security enthusiast.</p>
+            <p>Ломаю границы между реальностью и цифровым миром.</p>
+        </div>
+
+        <div class="section">
+            <h2>// Публичные ключи</h2>
+            <ul class="key-list">
+                <li>
+                    <a href="keys/id_ed25519.pub">[SSH] ed25519 public key</a>
+                </li>
+                <li>
+                    <a href="keys/public.pgp">[GPG] 4096R public key</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>// Исследования</h2>
+            <ul class="key-list">
+                <li><a href="https://hackerone.com/reports/180074">Методика внедрения PHP-кода в файлы без тега ?&gt;</a></li>
+                <li>Анализ уязвимостей изображений в формате JPG</li>
+                <li>Методика выполнения SQL-инъекции посредством социальной инженерии CTO</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>// CTF</h2>
+            <ul class="key-list">
+                <li>Победитель - Global Cyberlympics</li>
+                <li>Призер - Олимпиада имени И. Я. Верченко</li>
+                <li>Диплом - KnightCTF</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('matrix').appendChild(canvas);
+
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+
+        const cols = Math.floor(w / 20) + 1;
+        const ypos = Array(cols).fill(0);
+
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+
+        function matrix() {
+            ctx.fillStyle = '#0001';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = '15pt monospace';
+
+            ypos.forEach((y, ind) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                const x = ind * 20;
+                ctx.fillText(text, x, y);
+                if (y > 100 + Math.random() * 10000) ypos[ind] = 0;
+                else ypos[ind] = y + 20;
+            });
+        }
+
+        setInterval(matrix, 50);
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, w, h);
+        });
+
+        let currentColor = 0;
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const neonColors = [
+                '#0ff',  // cyan
+                '#f0f',  // magenta
+                '#0f0',  // green
+                '#ff0',  // yellow
+                '#f70',  // orange
+                '#f07',  // pink
+            ];
+            currentColor = (currentColor + 1) % neonColors.length;
+            document.documentElement.style.setProperty('--neon-color', neonColors[currentColor]);
+        });
+
+    </script>
+</body>
+</html>

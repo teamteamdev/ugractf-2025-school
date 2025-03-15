@@ -1,0 +1,19 @@
+category: web
+points: 150
+title: √
+author: nsychev
+description: |
+  Разработчики одного известного сервиса решили воскресить своё детище под новым названием и с новой миссией.
+generator: ../_scripts/kyzylborda-lib-generator
+attachments_path: public/
+daemon:
+  exec: kyzylborda-docker-compose-daemon
+  cwd: .
+  socket: ./app.sock
+  socket_type: http
+  hostnames:
+   - radikal.s.2025.ugractf.ru
+   - radikal.board.ugractf.ru
+secrets:
+  flag: ugra_how_to_unsee_this_formula_[a-z0-9]{12}
+  seed: igUtxO4WC5dgPhnZS8iYJc28lgskpZPi

@@ -1,0 +1,16 @@
+category: crypto
+points: 100
+title:
+  ru: Маршрут
+  en: Route
+author: sylfn
+description:
+  ru: |
+    <p>Приехали.
+  en: |
+    <p>That's it.
+generator: ../_scripts/kyzylborda-lib-generator
+secrets:
+  seed: +GX2VE8hxhiojM50cZqi0LHX/uzDRbQY
+  random_seed: seed_[a-zA-Z0-9]{20}
+  flag: ugra_thank_you_for_choosing_russian_railways_[0-13-9a-z]{24}

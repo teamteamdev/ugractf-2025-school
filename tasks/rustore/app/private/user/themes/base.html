@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Rust Ore{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}
+    <form method="post" action="post">
+        <textarea name="content" required></textarea>
+        <button type="submit">Post</button>
+    </form>
+
+    <form method="post" action="settings" enctype="multipart/form-data">
+        <select name="theme">
+            {% for th in ["default", "rusty", "modern"] %}
+            <option value="{{ th }}.html" {% if th + ".html" == theme %}selected{% endif %}>{{ th }}</option>
+            {% endfor %}
+        </select>
+        <p><label for="avatar">Avatar (SVG only):</label>
+        <input type="file" id="avatar" name="avatar" accept=".svg"></p>
+        <button type="submit">Change settings</button>
+    </form>
+
+    <hr>
+
+    <h1>Posts</h1>
+    
+    {% for timestamp, username, content in posts %}
+    <article>
+        <header>
+            <time datetime="{{ timestamp }}">{{ timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</time>
+            <span>by <img src="?avatars/{{ username }}.svg" alt="{{ username }}" style="width: 20px; height: 20px;"> {{ username }}</span>
+        </header>
+        <pre>{{ content }}</pre>
+    </article>
+    <hr>
+    {% endfor %}
+
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,250 @@
+{% extends "themes/base.html" %}
+
+{% block title %}Проект Rust Ore: записи{% endblock %}
+
+{% block head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+<style type="text/css">
+    :root {
+        --rust-orange: #b7410e;
+        --rust-brown: #8b4513;
+        --bg-color: #f5f5f5;
+    }
+    
+    body {
+        font-family: 'Montserrat', system-ui, sans-serif;
+        background: var(--bg-color);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        color: #333;
+    }
+
+    input {
+        font: inherit;
+    }
+
+    h1 {
+        color: var(--rust-orange);
+        border-bottom: 3px solid var(--rust-brown);
+        padding-bottom: 10px;
+        font-size: 5.5em;
+        letter-spacing: 0.2em;
+    }
+
+    h1 small {
+        color: var(--rust-brown);
+        font-size: 0.5em;
+        display: block;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background: var(--rust-orange);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn:hover {
+        background: var(--rust-brown);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: all 0.3s;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal.active .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    textarea {
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 100px;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    select {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    article {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    article header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #666;
+    }
+
+    article pre {
+        margin: 0;
+        padding: 0.5em;
+    }
+
+    article pre code {
+        display: block;
+        padding: 1em;
+        background: #2d2d2d;
+        border-radius: 5px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9em;
+    }
+
+    .code-block {
+        position: relative;
+        margin: 1em 0;
+        background: #4b2503 !important;
+        padding: 0.25em 0.5em;
+        border-radius: 0.25em;
+    }
+
+    .language-rust {
+        background: none !important;
+        padding: 0 !important;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 30px 0;
+    }
+</style>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        window.showModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+        };
+
+        window.hideModals = () => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        };
+
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) hideModals();
+            });
+        });
+
+        document.querySelectorAll('article pre').forEach(pre => {
+            const code = document.createElement('code');
+            code.className = 'language-rust';
+            code.textContent = pre.textContent;
+            pre.textContent = '';
+            pre.appendChild(code);
+            Prism.highlightElement(code);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<h1><small>проект</small> RUST ORE</h1>
+
+<p>Добро пожаловать в проект RUST ORE, где мы добываем и сохраняем драгоценную руду Rust! Как железо окисляется и превращается в ржавчину, 
+   так и знания нашего сообщества кристаллизуются в ценные инсайты. Здесь нет разногласий — мы единая сила, разъедающая 
+   сложные конструкции на чистые, отточенные (но съеденные) решения. Независимо от того, чувствуете ли вы себя немного <em>ржавым</em> или готовы 
+   тупо поржать — не дайте вашему коду окисляться в изоляции!</p>
+
+<div class="action-buttons">
+    <button class="btn" onclick="showModal('postModal')">Создать пост</button>
+    <button class="btn" onclick="showModal('settingsModal')">Настройки</button>
+</div>
+
+<div id="postModal" class="modal">
+    <div class="modal-content">
+        <h2>Новый пост</h2>
+        <form method="post" action="post">
+            <textarea name="content" required></textarea>
+            <button class="btn" type="submit">Опубликовать</button>
+        </form>
+    </div>
+</div>
+
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <h2>Настройки</h2>
+        <form method="post" action="settings" enctype="multipart/form-data">
+            <p>
+                <label for="theme">Тема оформления:</label>
+                <select name="theme">
+                    {% for th in ["default", "rusty", "modern"] %}
+                    <option value="{{ th }}.html" {% if th + ".html" == theme %}selected{% endif %}>{{ th }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="avatar">Выберите аватар (необязательно):</label>
+                <input type="file" id="avatar" name="avatar" accept=".svg">
+            </p>
+            <button class="btn" type="submit">Изменить настройки</button>
+        </form>
+    </div>
+</div>
+
+{% for timestamp, username, content in posts %}
+<article>
+    <header>
+        <time datetime="{{ timestamp }}">{{ timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</time>
+        <span>от <img src="?avatars/{{ username }}.svg" alt="{{ username }}" style="width: 20px; height: 20px;"> {{ username }}</span>
+    </header>
+    <div class="code-block">
+        <pre>{{ content }}</pre>
+    </div>
+</article>
+{% endfor %}
+
+{% endblock %}

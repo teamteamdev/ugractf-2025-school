@@ -1,0 +1,350 @@
+{% extends "themes/base.html" %}
+
+{% block title %}RUST ORE !!!{% endblock %}
+
+{% block head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Orelega+One:wght@400&family=Merriweather:wght@400;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+<style type="text/css">
+    :root {
+        --rust-dark: #8B4513;
+        --rust-light: #D2691E;
+        --rust-accent: #FF6B35;
+        --text-color: #2C1810;
+    }
+
+    body {
+        font-family: 'Merriweather', serif;
+        background: #F4D03F;
+        background-image: url('https://unblast.com/wp-content/uploads/2020/04/Seamless-Rust-Texture-1024x768.jpg'), linear-gradient(rgba(244, 208, 63, 0.95), rgba(244, 208, 63, 0.95));
+        background-attachment: fixed;
+        background-position: top center;
+        background-size: cover;
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+
+    .page-header {
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+        background-position: center;
+        background-size: cover;
+        padding: 4rem 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        border-bottom: 8px solid var(--rust-dark);
+    }
+
+    h1 {
+        font-family: 'Orelega One', serif;
+        font-size: 6em;
+        margin: 0;
+        color: #FFD700;
+        text-shadow: 
+            3px 3px 0 var(--rust-dark),
+            -3px -3px 0 var(--rust-dark),
+            3px -3px 0 var(--rust-dark),
+            -3px 3px 0 var(--rust-dark);
+        letter-spacing: 0.1em;
+    }
+
+    h1 small {
+        display: block;
+        font-size: 0.3em;
+        color: var(--rust-light);
+        text-shadow: none;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .welcome-text {
+        font-size: 1.2em;
+        text-align: center;
+        margin: 2rem auto;
+        max-width: 800px;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        border: 3px solid var(--rust-dark);
+    }
+
+    .action-buttons {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .btn {
+        font-family: 'Orelega One', serif;
+        font-size: 1.2em;
+        padding: 1rem 2rem;
+        margin: 0 1rem;
+        background: var(--rust-dark);
+        color: #FFD700;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+        background: var(--rust-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.active {
+        display: flex;
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, #FFF5E6, #FFE5CC);
+        border: 4px solid var(--rust-dark);
+        padding: 2rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 600px;
+        position: relative;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: all 0.3s ease-out;
+    }
+
+    .modal.active .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .modal h2 {
+        font-family: 'Orelega One', serif;
+        color: var(--rust-dark);
+        margin-top: 0;
+        font-size: 2em;
+    }
+
+    article {
+        background: rgba(255, 255, 255, 0.95);
+        margin: 3rem 0;
+        padding: 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: 3px solid var(--rust-dark);
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    article header {
+        background: linear-gradient(135deg, var(--rust-dark), var(--rust-light));
+        padding: 2rem 1rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        border-right: 3px solid var(--rust-dark);
+    }
+
+    .user-info {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-info img {
+        width: 256px;
+        height: 256px;
+        border: 4px solid #FFD700;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .user-info .username {
+        display: block;
+        font-family: 'Orelega One', serif;
+        font-size: 1.5em;
+        color: #FFD700;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        margin: 0.5rem 0;
+    }
+
+    .post-meta {
+        text-align: center;
+        border-top: 2px solid rgba(255, 215, 0, 0.3);
+        padding-top: 1rem;
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    time {
+        font-family: 'Fira Code', monospace;
+        color: #FFD700;
+        font-size: 1.1em;
+        display: block;
+    }
+
+    .code-block {
+        padding: 2rem;
+        background: #2D2D2D;
+        margin: 0;
+        min-height: 300px;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    .code-block pre {
+        margin: 0;
+        padding: 0;
+        white-space: pre;
+        width: fit-content;
+        min-width: 100%;
+    }
+
+    .code-block pre code {
+        font-family: 'Fira Code', monospace;
+        font-size: 1.1em;
+        line-height: 1.6;
+        display: block;
+    }
+
+    select, input[type="file"] {
+        font-family: 'Merriweather', serif;
+        padding: 0.5rem;
+        border: 2px solid var(--rust-dark);
+        border-radius: 5px;
+        background: white;
+        margin: 0.5rem 0;
+    }
+
+    textarea {
+        font-family: 'Fira Code', monospace;
+        font-size: 1.1em;
+        padding: 1rem;
+        border: 2px solid var(--rust-dark);
+        border-radius: 5px;
+        background: #2D2D2D;
+        color: #FFF;
+        min-height: 200px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        window.showModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+        };
+
+        window.hideModals = () => {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        };
+
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) hideModals();
+            });
+        });
+
+        document.querySelectorAll('article pre').forEach(pre => {
+            const code = document.createElement('code');
+            code.className = 'language-rust';
+            code.textContent = pre.textContent;
+            pre.textContent = '';
+            pre.appendChild(code);
+            Prism.highlightElement(code);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="page-header">
+    <h1>RUST ORE</h1>
+</div>
+
+<div class="container">
+    <div class="action-buttons">
+        <button class="btn" onclick="showModal('postModal')">Создать пост</button>
+        <button class="btn" onclick="showModal('settingsModal')">Настройки</button>
+    </div>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <h2>Новый пост</h2>
+            <form method="post" action="post">
+                <textarea name="content" required></textarea>
+                <button class="btn" type="submit">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h2>Настройки</h2>
+            <form method="post" action="settings" enctype="multipart/form-data">
+                <p>
+                    <label for="theme">Тема оформления:</label>
+                    <select name="theme">
+                        {% for th in ["default", "rusty", "modern"] %}
+                        <option value="{{ th }}.html" {% if th + ".html" == theme %}selected{% endif %}>{{ th }}</option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                    <label for="avatar">Выберите аватар (необязательно):</label>
+                    <input type="file" id="avatar" name="avatar" accept=".svg">
+                </p>
+                <button class="btn" type="submit">Изменить настройки</button>
+            </form>
+        </div>
+    </div>
+
+    {% for timestamp, username, content in posts %}
+    <article>
+        <header>
+            <div class="user-info">
+                <img src="?avatars/{{ username }}.svg" alt="{{ username }}">
+                <span class="username">{{ username }}</span>
+            </div>
+            <div class="post-meta">
+                <time datetime="{{ timestamp }}">{{ timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</time>
+            </div>
+        </header>
+        <div class="code-block">
+            <pre>{{ content }}</pre>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

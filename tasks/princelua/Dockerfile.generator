@@ -1,0 +1,5 @@
+FROM python:alpine
+
+COPY generate.py /generate.py
+
+ENTRYPOINT ["python", "/generate.py"]

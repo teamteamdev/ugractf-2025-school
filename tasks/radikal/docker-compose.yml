@@ -1,0 +1,21 @@
+services:
+  app:
+    build: app
+    user: "${DOCKER_USER}"
+    hostname: radikal-www
+    volumes:
+      - "${KYZYLBORDA_TMPDIR}:/tmp"
+      - "${STATEDIR}:/state"
+  token:
+    build: token
+    environment:
+      - TASK_NAME
+    user: "${DOCKER_USER}"
+    volumes:
+      - "${KYZYLBORDA_TMPDIR}:/tmp"
+      - "${STATEDIR}:/state"
+      - "./:/task:ro"
+
+networks:
+  default:
+    internal: true

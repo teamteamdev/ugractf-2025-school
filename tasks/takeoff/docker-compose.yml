@@ -1,0 +1,26 @@
+services:
+  app:
+    build: app
+    environment:
+      - TASK_NAME
+    networks:
+      - isolated
+    user: "${DOCKER_USER}"
+    volumes:
+      - "./app:/app:ro"
+      - "${KYZYLBORDA_TMPDIR}:/tmp"
+      - "${STATEDIR}:/state"
+      - "./:/task:ro"
+  ssh:
+    build: ssh
+    user: "${DOCKER_USER}"
+    ports:
+      - "40022:40022"
+    volumes:
+      - "./ssh:/ssh:ro"
+      - "${KYZYLBORDA_TMPDIR}:/tmp"
+      - "${STATEDIR}:/state"
+      - "./:/task:ro"
+networks:
+  isolated:
+    internal: true
